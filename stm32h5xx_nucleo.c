@@ -22,8 +22,6 @@
 #include "stm32h5xx_nucleo.h"
 #if defined(__ICCARM__)
 #include <LowLevelIOInterface.h>
-#elif defined ( __CC_ARM ) || defined(__ARMCC_VERSION)
-#include "stdio.h"
 #endif /* __ICCARM__ */
 
 /** @addtogroup BSP
@@ -502,7 +500,7 @@ int32_t BSP_COM_Init(COM_TypeDef COM, COM_InitTypeDef *COM_Init)
     }
 #endif /* (USE_HAL_UART_REGISTER_CALLBACKS == 0) */
 
-    if (MX_USART3_Init(&hcom_uart[COM], COM_Init) != HAL_OK)
+    if (MX_USART_Init(&hcom_uart[COM], COM_Init) != HAL_OK)
     {
       ret = BSP_ERROR_PERIPH_FAILURE;
     }
@@ -550,7 +548,7 @@ int32_t BSP_COM_DeInit(COM_TypeDef COM)
   *                  configuration information for the specified USART peripheral.
   * @retval HAL error code
   */
-__weak HAL_StatusTypeDef MX_USART3_Init(UART_HandleTypeDef *huart, MX_UART_InitTypeDef *COM_Init)
+__weak HAL_StatusTypeDef MX_USART_Init(UART_HandleTypeDef *huart, MX_UART_InitTypeDef *COM_Init)
 {
   /* USART configuration */
   huart->Instance                = COM_USART[COM1];
@@ -735,7 +733,7 @@ static void COM1_MspInit(UART_HandleTypeDef *huart)
 }
 
 /**
-  * @brief  Initialize USART3 Msp part
+  * @brief  Initialize USART Msp part
   * @param  huart UART handle
   * @retval BSP status
   */

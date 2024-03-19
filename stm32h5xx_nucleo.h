@@ -31,11 +31,7 @@ extern "C" {
 #include "stm32h5xx_nucleo_errno.h"
 
 #if (USE_BSP_COM_FEATURE > 0)
-#if (USE_COM_LOG > 0)
-#ifndef __GNUC__
 #include <stdio.h>
-#endif /* __GNUC__ */
-#endif /* USE_COM_LOG */
 #endif /* USE_BSP_COM_FEATURE */
 
 /** @addtogroup BSP
@@ -76,7 +72,7 @@ typedef enum
   LED_RED = LED3,
 #else
   LED2 = 0,
-  LED_YELLOW = LED2,
+  LED_GREEN = LED2,
 #endif /* defined (USE_NUCLEO_144) */
   LED_NBR
 } Led_TypeDef;
@@ -158,10 +154,10 @@ typedef struct
   */
 
 /**
-  * @brief STM32H5XX NUCLEO BSP Driver version number V1.0.0
+  * @brief STM32H5XX NUCLEO BSP Driver version number V1.1.0
   */
 #define STM32H5XX_NUCLEO_BSP_VERSION_MAIN   (0x01U) /*!< [31:24] main version */
-#define STM32H5XX_NUCLEO_BSP_VERSION_SUB1   (0x00U) /*!< [23:16] sub1 version */
+#define STM32H5XX_NUCLEO_BSP_VERSION_SUB1   (0x01U) /*!< [23:16] sub1 version */
 #define STM32H5XX_NUCLEO_BSP_VERSION_SUB2   (0x00U) /*!< [15:8]  sub2 version */
 #define STM32H5XX_NUCLEO_BSP_VERSION_RC     (0x00U) /*!< [7:0]  release candidate */
 #define STM32H5XX_NUCLEO_BSP_VERSION        ((STM32H5XX_NUCLEO_BSP_VERSION_MAIN << 24)\
@@ -172,8 +168,13 @@ typedef struct
 #define STM32H5XX_NUCLEO_BSP_BOARD_NAME     "NUCLEO-H563ZI";
 #define STM32H5XX_NUCLEO_BSP_BOARD_ID       "MB1404A";
 #else
+#if defined (USE_NUCLEO_H533RE)
+#define STM32H5XX_NUCLEO_BSP_BOARD_NAME     "NUCLEO-H533RE";
+#define STM32H5XX_NUCLEO_BSP_BOARD_ID       "MB1814C";
+#else
 #define STM32H5XX_NUCLEO_BSP_BOARD_NAME     "NUCLEO-H503RB";
-#define STM32H5XX_NUCLEO_BSP_BOARD_ID       "MB1814A";
+#define STM32H5XX_NUCLEO_BSP_BOARD_ID       "MB1814B";
+#endif /* USE_NUCLEO_H533RE */
 #endif /* USE_NUCLEO_144 */
 
 /** @defgroup STM32H5XX_NUCLEO_LOW_LEVEL_LED LOW LEVEL LED
@@ -232,11 +233,11 @@ typedef struct
  * @brief Definition for COM port1, connected to USART3
  */
 #if (USE_BSP_COM_FEATURE > 0)
+#if defined (USE_NUCLEO_144)
 #define COM1_UART                     USART3
 #define COM1_CLK_ENABLE()             __HAL_RCC_USART3_CLK_ENABLE()
 #define COM1_CLK_DISABLE()            __HAL_RCC_USART3_CLK_DISABLE()
 
-#if defined (USE_NUCLEO_144)
 #define COM1_TX_PIN                   GPIO_PIN_8
 #define COM1_TX_GPIO_PORT             GPIOD
 #define COM1_TX_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOD_CLK_ENABLE()
@@ -249,6 +250,27 @@ typedef struct
 #define COM1_RX_GPIO_CLK_DISABLE()    __HAL_RCC_GPIOD_CLK_DISABLE()
 #define COM1_RX_AF                    GPIO_AF7_USART3
 #else /* defined (USE_NUCLEO_64) */
+#if defined (USE_NUCLEO_H533RE)
+#define COM1_UART                     USART2
+#define COM1_CLK_ENABLE()             __HAL_RCC_USART2_CLK_ENABLE()
+#define COM1_CLK_DISABLE()            __HAL_RCC_USART2_CLK_DISABLE()
+
+#define COM1_TX_PIN                   GPIO_PIN_2
+#define COM1_TX_GPIO_PORT             GPIOA
+#define COM1_TX_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOA_CLK_ENABLE()
+#define COM1_TX_GPIO_CLK_DISABLE()    __HAL_RCC_GPIOA_CLK_DISABLE()
+#define COM1_TX_AF                    GPIO_AF7_USART2
+
+#define COM1_RX_PIN                   GPIO_PIN_3
+#define COM1_RX_GPIO_PORT             GPIOA
+#define COM1_RX_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOA_CLK_ENABLE()
+#define COM1_RX_GPIO_CLK_DISABLE()    __HAL_RCC_GPIOA_CLK_DISABLE()
+#define COM1_RX_AF                    GPIO_AF7_USART2
+#else
+#define COM1_UART                     USART3
+#define COM1_CLK_ENABLE()             __HAL_RCC_USART3_CLK_ENABLE()
+#define COM1_CLK_DISABLE()            __HAL_RCC_USART3_CLK_DISABLE()
+
 #define COM1_TX_PIN                   GPIO_PIN_4
 #define COM1_TX_GPIO_PORT             GPIOA
 #define COM1_TX_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOA_CLK_ENABLE()
@@ -260,7 +282,8 @@ typedef struct
 #define COM1_RX_GPIO_CLK_ENABLE()     __HAL_RCC_GPIOA_CLK_ENABLE()
 #define COM1_RX_GPIO_CLK_DISABLE()    __HAL_RCC_GPIOA_CLK_DISABLE()
 #define COM1_RX_AF                    GPIO_AF13_USART3
-#endif /* defined (USE_NUCLEO_144) */
+#endif /* defined (USE_NUCLEO_64) */
+#endif /* defined (USE_NUCLEO_H533RE) */
 #define COM_POLL_TIMEOUT             1000
 #endif /* USE_BSP_COM_FEATURE */
 
@@ -314,7 +337,7 @@ int32_t  BSP_COM_SelectLogPort(COM_TypeDef COM);
 int32_t BSP_COM_RegisterDefaultMspCallbacks(COM_TypeDef COM);
 int32_t BSP_COM_RegisterMspCallbacks(COM_TypeDef COM, BSP_COM_Cb_t *Callback);
 #endif /* USE_HAL_UART_REGISTER_CALLBACKS */
-HAL_StatusTypeDef MX_USART3_Init(UART_HandleTypeDef *huart, MX_UART_InitTypeDef *COM_Init);
+HAL_StatusTypeDef MX_USART_Init(UART_HandleTypeDef *huart, MX_UART_InitTypeDef *COM_Init);
 #endif /* USE_BSP_COM_FEATURE */
 
 /**

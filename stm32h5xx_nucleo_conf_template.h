@@ -46,7 +46,10 @@ extern "C" {
   */
 /* Nucleo pin and part number defines */
 #define USE_NUCLEO_144
+/* Un-comment USE_NUCLEO_64 to use either NUCLEO-H503RB or NUCLEO-H533RE boards.
+   By default NUCLEO-H503RB is selected. Un-comment USE_NUCLEO_H533RE */
 /* #define USE_NUCLEO_64 */
+/* #define USE_NUCLEO_H533RE */
 
 /* COM define */
 #define USE_COM_LOG                         0U
