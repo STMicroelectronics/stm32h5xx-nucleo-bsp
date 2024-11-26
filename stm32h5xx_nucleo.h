@@ -53,9 +53,9 @@ extern "C" {
 #define USE_STM32H5XX_NUCLEO
 #endif /* !defined (USE_STM32H5XX_NUCLEO) */
 
-#if !defined (USE_NUCLEO_144) && !defined (USE_NUCLEO_64)
-#error "Board Pin number not defined!! Add USE_NUCLEO_144 define within stm32h5xx_nucleo_conf.h file"
-#endif /* (!defined (USE_NUCLEO_144) && !defined (USE_NUCLEO_64)) */
+#if !defined (USE_NUCLEO_144) && !defined (USE_NUCLEO_64) && !defined (USE_NUCLEO_H533RE)
+#error "Board Pin number not defined!! Add USE_NUCLEO_144 or USE_NUCLEO_64 or USE_NUCLEO_H533RE define in conf.h file"
+#endif /* (!defined (USE_NUCLEO_144) && !defined (USE_NUCLEO_64) && !defined (USE_NUCLEO_H533RE)) */
 
 
 /** @defgroup STM32H5XX_NUCLEO_LOW_LEVEL_Exported_Types LOW LEVEL Exported Types
@@ -161,9 +161,9 @@ typedef struct
 #define STM32H5XX_NUCLEO_BSP_VERSION_SUB2   (0x00U) /*!< [15:8]  sub2 version */
 #define STM32H5XX_NUCLEO_BSP_VERSION_RC     (0x00U) /*!< [7:0]  release candidate */
 #define STM32H5XX_NUCLEO_BSP_VERSION        ((STM32H5XX_NUCLEO_BSP_VERSION_MAIN << 24)\
-                                            |(STM32H5XX_NUCLEO_BSP_VERSION_SUB1 << 16)\
-                                            |(STM32H5XX_NUCLEO_BSP_VERSION_SUB2 << 8 )\
-                                            |(STM32H5XX_NUCLEO_BSP_VERSION_RC))
+                                             |(STM32H5XX_NUCLEO_BSP_VERSION_SUB1 << 16)\
+                                             |(STM32H5XX_NUCLEO_BSP_VERSION_SUB2 << 8 )\
+                                             |(STM32H5XX_NUCLEO_BSP_VERSION_RC))
 #if defined (USE_NUCLEO_144)
 #define STM32H5XX_NUCLEO_BSP_BOARD_NAME     "NUCLEO-H563ZI";
 #define STM32H5XX_NUCLEO_BSP_BOARD_ID       "MB1404A";
@@ -213,13 +213,13 @@ typedef struct
 #define BUTTON_PRESSED                     1U
 
 /**
- * @brief Key push-button
- */
+  * @brief Key push-button
+  */
 #define BUTTON_USER_PIN                       GPIO_PIN_13
 #define BUTTON_USER_GPIO_PORT                 GPIOC
 #define BUTTON_USER_GPIO_CLK_ENABLE()         __HAL_RCC_GPIOC_CLK_ENABLE()
 #define BUTTON_USER_GPIO_CLK_DISABLE()        __HAL_RCC_GPIOC_CLK_DISABLE()
-#define BUTTON_USER_EXTI_IRQn                 EXTI13_IRQn
+#define BUTTON_USER_EXTI_IRQ                  EXTI13_IRQn
 #define BUTTON_USER_EXTI_LINE                 EXTI_LINE_13
 
 /**
@@ -230,8 +230,8 @@ typedef struct
   * @{
   */
 /**
- * @brief Definition for COM port1, connected to USART3
- */
+  * @brief Definition for COM port1, connected to USART3
+  */
 #if (USE_BSP_COM_FEATURE > 0)
 #if defined (USE_NUCLEO_144)
 #define COM1_UART                     USART3
@@ -301,7 +301,7 @@ typedef struct
 extern EXTI_HandleTypeDef hpb_exti[];
 #if (USE_BSP_COM_FEATURE > 0)
 extern UART_HandleTypeDef hcom_uart[];
-extern USART_TypeDef* COM_USART[];
+extern USART_TypeDef *COM_USART[];
 #endif /* USE_BSP_COM_FEATURE */
 
 /**

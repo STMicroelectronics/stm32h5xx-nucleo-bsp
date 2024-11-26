@@ -68,29 +68,31 @@ USART_TypeDef *COM_USART[COM_NBR]   = {COM1_UART};
 /** @defgroup STM32H5XX_NUCLEO_LOW_LEVEL_Private_Variables LOW LEVEL Private Variables
   * @{
   */
-static GPIO_TypeDef* LED_PORT[LED_NBR] = {
+static GPIO_TypeDef *LED_PORT[LED_NBR] =
+{
 #if defined (USE_NUCLEO_144)
-                                          LED1_GPIO_PORT,
+  LED1_GPIO_PORT,
 #endif /* defined (USE_NUCLEO_144) */
-                                          LED2_GPIO_PORT,
+  LED2_GPIO_PORT,
 #if defined (USE_NUCLEO_144)
-                                          LED3_GPIO_PORT
+  LED3_GPIO_PORT
 #endif /* defined (USE_NUCLEO_144) */
-                                          };
+};
 
-static const uint16_t LED_PIN[LED_NBR] = {
+static const uint16_t LED_PIN[LED_NBR] =
+{
 #if defined (USE_NUCLEO_144)
-                                          LED1_PIN,
+  LED1_PIN,
 #endif /* defined (USE_NUCLEO_144) */
-                                          LED2_PIN,
+  LED2_PIN,
 #if defined (USE_NUCLEO_144)
-                                          LED3_PIN
+  LED3_PIN
 #endif /* defined (USE_NUCLEO_144) */
-                                          };
+};
 
-static GPIO_TypeDef* BUTTON_PORT[BUTTON_NBR] = {BUTTON_USER_GPIO_PORT};
+static GPIO_TypeDef *BUTTON_PORT[BUTTON_NBR] = {BUTTON_USER_GPIO_PORT};
 static const uint16_t BUTTON_PIN[BUTTON_NBR] = {BUTTON_USER_PIN};
-static const IRQn_Type BUTTON_IRQn[BUTTON_NBR] = {BUTTON_USER_EXTI_IRQn};
+static const IRQn_Type BUTTON_IRQn[BUTTON_NBR] = {BUTTON_USER_EXTI_IRQ};
 
 #if (USE_BSP_COM_FEATURE > 0)
 #if (USE_COM_LOG > 0)
@@ -175,18 +177,18 @@ int32_t BSP_LED_Init(Led_TypeDef Led)
   int32_t ret = BSP_ERROR_NONE;
   GPIO_InitTypeDef  gpio_init_structure;
 
-  if((Led != LED2)
+  if ((Led != LED2)
 #if defined (USE_NUCLEO_144)
-     && (Led != LED1) && (Led != LED3)
+      && (Led != LED1) && (Led != LED3)
 #endif /* defined (USE_NUCLEO_144) */
-       )
+     )
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
   else
   {
     /* Enable the GPIO LED Clock */
-    if(Led == LED2)
+    if (Led == LED2)
     {
       LED2_GPIO_CLK_ENABLE();
     }
@@ -229,11 +231,11 @@ int32_t BSP_LED_DeInit(Led_TypeDef Led)
   int32_t ret = BSP_ERROR_NONE;
   GPIO_InitTypeDef  gpio_init_structure;
 
-  if((Led != LED2)
+  if ((Led != LED2)
 #if defined (USE_NUCLEO_144)
-     && (Led != LED1) && (Led != LED3)
+      && (Led != LED1) && (Led != LED3)
 #endif /* defined (USE_NUCLEO_144) */
-    )
+     )
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
@@ -262,11 +264,11 @@ int32_t BSP_LED_On(Led_TypeDef Led)
 {
   int32_t ret = BSP_ERROR_NONE;
 
-  if((Led != LED2)
+  if ((Led != LED2)
 #if defined (USE_NUCLEO_144)
-     && (Led != LED1) && (Led != LED3)
+      && (Led != LED1) && (Led != LED3)
 #endif /* defined (USE_NUCLEO_144) */
-    )
+     )
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
@@ -291,11 +293,11 @@ int32_t BSP_LED_Off(Led_TypeDef Led)
 {
   int32_t ret = BSP_ERROR_NONE;
 
-  if((Led != LED2)
+  if ((Led != LED2)
 #if defined (USE_NUCLEO_144)
-     && (Led != LED1) && (Led != LED3)
+      && (Led != LED1) && (Led != LED3)
 #endif /* defined (USE_NUCLEO_144) */
-    )
+     )
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
@@ -320,11 +322,11 @@ int32_t BSP_LED_Toggle(Led_TypeDef Led)
 {
   int32_t ret = BSP_ERROR_NONE;
 
-  if((Led != LED2)
+  if ((Led != LED2)
 #if defined (USE_NUCLEO_144)
-     && (Led != LED1) && (Led != LED3)
+      && (Led != LED1) && (Led != LED3)
 #endif /* defined (USE_NUCLEO_144) */
-    )
+     )
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
@@ -345,21 +347,21 @@ int32_t BSP_LED_Toggle(Led_TypeDef Led)
   *     @arg  LED3
   * @retval LED status
   */
-int32_t BSP_LED_GetState (Led_TypeDef Led)
+int32_t BSP_LED_GetState(Led_TypeDef Led)
 {
   int32_t ret;
 
-  if((Led != LED2)
+  if ((Led != LED2)
 #if defined (USE_NUCLEO_144)
-     && (Led != LED1) && (Led != LED3)
+      && (Led != LED1) && (Led != LED3)
 #endif /* defined (USE_NUCLEO_144) */
-    )
+     )
   {
     ret = BSP_ERROR_WRONG_PARAM;
   }
   else
   {
-    ret = (int32_t)HAL_GPIO_ReadPin (LED_PORT [Led], LED_PIN [Led]);
+    ret = (int32_t)HAL_GPIO_ReadPin(LED_PORT [Led], LED_PIN [Led]);
   }
 
   return ret;
@@ -390,7 +392,7 @@ int32_t BSP_PB_Init(Button_TypeDef Button, ButtonMode_TypeDef ButtonMode)
   gpio_init_structure.Pull = GPIO_PULLDOWN;
   gpio_init_structure.Speed = GPIO_SPEED_FREQ_HIGH;
 
-  if(ButtonMode == BUTTON_MODE_GPIO)
+  if (ButtonMode == BUTTON_MODE_GPIO)
   {
     /* Configure Button pin as input */
     gpio_init_structure.Mode = GPIO_MODE_INPUT;
